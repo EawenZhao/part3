@@ -11,6 +11,7 @@ public:
 
     int getColumn() const;
 
+
 private:
     int row;
     int column;

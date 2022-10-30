@@ -17,3 +17,4 @@ int Position::getRow() const {
 int Position::getColumn() const {
     return column;
 }
+

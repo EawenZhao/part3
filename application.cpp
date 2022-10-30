@@ -5,44 +5,44 @@ using namespace std;
 
 
 //board
-int maze[8][13] = {{1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1},
-                   {1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1},
-                   {1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1},
-                   {1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1},
-                   {1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1},
-                   {1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0},
-                   {0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
-                   {0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1}};
+char board[8][8] = {0};
+int queenNum = 0;
 
-void Application::initialize() {}
+void Application::initialize() {
+}
 
 Position Application::getStartPosition() {
+    board[0][0] = 'Q';
     return Position(0, 0);
 }
 
+/******** To be implemented ↓ **********/
 bool Application::isValid(const Position &p) {
     int row = p.getRow();
     int column = p.getColumn();
-    return (row >= 0 && row <= 7) && (column >= 0 && column <= 12) && maze[row][column] == 1;
+    return (row >= 0 && row <= 7) && (column >= 0 && column <= 7) && ;
 }
 
 void Application::progress(const Position &p) {
-    maze[p.getRow()][p.getColumn()] = 9;
+    board[p.getRow()][p.getColumn()] = 'Q';
+    queenNum++;
 }
 
 bool Application::success(const Position &p) {
-    return p.getRow() == 7 && p.getColumn() == 12;
+    return queenNum == 8;
 }
+/******** maybe ********/
 
 void Application::goBack(const Position &p) {
 
-    maze[p.getRow()][p.getColumn()] = 1;
+    board[p.getRow()][p.getColumn()] = 0;
+    queenNum--;
 }
 
 void Application::print() {
     for (int i = 0; i < 8; i++) {
-        for (int j = 0; j < 13; j++)
-            cout << maze[i][j] << " ";
+        for (int j = 0; j < 8; j++)
+            cout << board[i][j] << " ";
         cout << endl;
     }
 }
