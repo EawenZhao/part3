@@ -4,15 +4,16 @@
 #include "application.h"
 #include "position.h"
 
-class BackTrack
-{
+class BackTrack {
 public:
-	BackTrack();
-	BackTrack(const Application& thisApp);
+    BackTrack();
 
-	bool backTrack(const Position& currPos);
+    BackTrack(const Application &thisApp);
+
+    bool backTrack(const Position &currPos);
+
 private:
-	Application app;
+    Application app;
 };
 
 #endif
