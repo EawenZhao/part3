@@ -16,11 +16,33 @@ Position Application::getStartPosition() {
     return Position(0, 0);
 }
 
-/******** To be implemented ↓ **********/
 bool Application::isValid(const Position &p) {
     int row = p.getRow();
     int column = p.getColumn();
-    return (row >= 0 && row <= 7) && (column >= 0 && column <= 7) && ;
+    bool check_row = false;
+    bool check_column = false;
+    bool check_diag = false;
+
+    for (int i = 0; i < 8; ++i) {
+        if (board[i][column] == 'Q') {
+            check_row = true;
+        }
+    }   // check for column
+
+    for (int i = 0; i < 8; ++i) {
+        if (board[row][i] == 'Q') {
+            check_column = true;
+        }
+    }   //check for row
+
+    if (board[row - 1][column - 1] == 'Q' || board[row + 1][column + 1] == 'Q' ||
+        board[row - 1][column + 1] == 'Q' || board[row + 1][column - 1] == 'Q') {
+        check_diag = true;
+    }//check for diag
+
+
+    return (row >= 0 && row <= 7) && (column >= 0 && column <= 7)
+           && !(check_column || check_diag || check_row);
 }
 
 void Application::progress(const Position &p) {
@@ -31,6 +53,7 @@ void Application::progress(const Position &p) {
 bool Application::success(const Position &p) {
     return queenNum == 8;
 }
+
 /******** maybe ********/
 
 void Application::goBack(const Position &p) {
@@ -52,8 +75,6 @@ void Application::print() {
 struct itrPosition {
     int row;
     int column;
-    int turn;
-    /******* What does this 'turn' mean ↑ ? ************/
 };
 
 //application iterator
@@ -66,35 +87,24 @@ Application::Iterator::Iterator(const Position &currPos) {
     itrPosition *p = new itrPosition;
     p->row = currPos.getRow();
     p->column = currPos.getColumn();
-    p->turn = 0;
     currItrPosPtr = p;
     //current-iterator-position pointer
 }
 
 Position Application::Iterator::getNextPosition() {
-    int row = ((itrPosition *) currItrPosPtr)->row;   //（ ）是类型强转
-    int column = ((itrPosition *) currItrPosPtr)->column;
-    int turn = ((itrPosition *) currItrPosPtr)->turn;
-    if (turn == 0) {
+    static int done = 0;
+    static int row = ((itrPosition *) currItrPosPtr)->row;   //（ ）是类型强转
+    static int column = ((itrPosition *) currItrPosPtr)->column;
+    if (done == 0) {
         column++;
-        turn++;
-    } else if (turn == 1) {
-        row++;
-        turn++;
-    } else if (turn == 2) {
-        column--;
-        turn++;
-    } else if (turn == 3) {
-        row--;
-        turn++;
-    } else {
-    }
-    ((itrPosition *) currItrPosPtr)->turn = turn;
+        done = 1;
+    } else { row++; }
+
     return Position(row, column); //return the new position
 }
 
 bool Application::Iterator::noNextPosition() {
-    return ((itrPosition *) currItrPosPtr)->turn > 3;
+    return ((itrPosition *) currItrPosPtr)->row == 7;
 }
 
 Application::Iterator::~Iterator() {
