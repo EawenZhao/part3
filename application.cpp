@@ -7,6 +7,7 @@ using namespace std;
 //board
 char board[8][8] = {0};
 int queenNum = 0;
+int done = 0;
 
 void Application::initialize() {
 }
@@ -92,7 +93,6 @@ Application::Iterator::Iterator(const Position &currPos) {
 }
 
 Position Application::Iterator::getNextPosition() {
-    static int done = 0;
     static int row = ((itrPosition *) currItrPosPtr)->row;   //（ ）是类型强转
     static int column = ((itrPosition *) currItrPosPtr)->column;
     if (done == 0) {
