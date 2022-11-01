@@ -1,5 +1,7 @@
 #include "backtrack.h"
+#include <iostream>
 
+using namespace std;
 BackTrack::BackTrack() {}
 
 BackTrack::BackTrack(const Application &thisApp) {
@@ -8,17 +10,20 @@ BackTrack::BackTrack(const Application &thisApp) {
 
 bool BackTrack::backTrack(const Position &currPos) {
     app.progress(currPos);
+    app.print();
+    cout << endl;
 
     if (app.success(currPos))
         return true;
 
     else {
         Application::Iterator itr(currPos);
-
         Position nextPos;
 
-        while (!itr.noNextPosition()) {
+        while (nextPos.getRow() != 7) {
+
             nextPos = itr.getNextPosition();
+
             if (app.isValid(nextPos) && backTrack(nextPos)) //recursive call if valid
                 return true;
         }

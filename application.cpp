@@ -5,15 +5,17 @@ using namespace std;
 
 
 //board
-char board[8][8] = {0};
+int board[8][8] = {0};
 int queenNum = 0;
 int done = 0;
+
+/***********/
 
 void Application::initialize() {
 }
 
 Position Application::getStartPosition() {
-    board[0][0] = 'Q';
+    board[0][0] = 1;
     return Position(0, 0);
 }
 
@@ -25,21 +27,26 @@ bool Application::isValid(const Position &p) {
     bool check_diag = false;
 
     for (int i = 0; i < 8; ++i) {
-        if (board[i][column] == 'Q') {
+        if (board[i][column] == 1) {
             check_row = true;
         }
     }   // check for column
 
     for (int i = 0; i < 8; ++i) {
-        if (board[row][i] == 'Q') {
+        if (board[row][i] == 1) {
             check_column = true;
         }
     }   //check for row
 
-    if (board[row - 1][column - 1] == 'Q' || board[row + 1][column + 1] == 'Q' ||
-        board[row - 1][column + 1] == 'Q' || board[row + 1][column - 1] == 'Q') {
-        check_diag = true;
-    }//check for diag
+    for (int i = 0; i < 8; i++) //check for diag
+    {
+        for (int j = 0; j < 8; j++) {
+            if (i == row && j == column) { continue; }
+            if (abs(i - row) == abs(j - column)) {
+                if (board[i][j] == 1) { check_diag = true; }
+            }
+        }
+    }
 
 
     return (row >= 0 && row <= 7) && (column >= 0 && column <= 7)
@@ -47,8 +54,10 @@ bool Application::isValid(const Position &p) {
 }
 
 void Application::progress(const Position &p) {
-    board[p.getRow()][p.getColumn()] = 'Q';
     queenNum++;
+    board[p.getRow()][p.getColumn()] = 1;
+    /************/
+    done = 0;
 }
 
 bool Application::success(const Position &p) {
@@ -61,6 +70,7 @@ void Application::goBack(const Position &p) {
 
     board[p.getRow()][p.getColumn()] = 0;
     queenNum--;
+
 }
 
 void Application::print() {
@@ -93,18 +103,21 @@ Application::Iterator::Iterator(const Position &currPos) {
 }
 
 Position Application::Iterator::getNextPosition() {
-    static int row = ((itrPosition *) currItrPosPtr)->row;   //（ ）是类型强转
-    static int column = ((itrPosition *) currItrPosPtr)->column;
+    int row = ((itrPosition *) currItrPosPtr)->row;   //（ ）是类型强转
+    int column = ((itrPosition *) currItrPosPtr)->column;
     if (done == 0) {
+        row = 0;
         column++;
         done = 1;
     } else { row++; }
 
+    ((itrPosition *) currItrPosPtr)->row = row;
+    ((itrPosition *) currItrPosPtr)->column = column;
     return Position(row, column); //return the new position
 }
 
 bool Application::Iterator::noNextPosition() {
-    return ((itrPosition *) currItrPosPtr)->row == 7;
+
 }
 
 Application::Iterator::~Iterator() {
