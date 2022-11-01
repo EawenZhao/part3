@@ -20,13 +20,14 @@ bool BackTrack::backTrack(const Position &currPos) {
         Application::Iterator itr(currPos);
         Position nextPos;
 
-        while (nextPos.getRow() != 7) {
+        while (!itr.noNextPosition()) {
 
             nextPos = itr.getNextPosition();
 
             if (app.isValid(nextPos) && backTrack(nextPos)) //recursive call if valid
                 return true;
         }
+
         //cannot reach goal from currPos
         app.goBack(currPos); //backtrack
         return false; //from currPos, no solution

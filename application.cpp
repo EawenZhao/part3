@@ -6,8 +6,12 @@ using namespace std;
 
 //board
 int board[8][8] = {0};
+//Total queen number
 int queenNum = 0;
+//
 int done = 0;
+int tempr = 0;
+int tempc = 0;
 
 /***********/
 
@@ -64,7 +68,6 @@ bool Application::success(const Position &p) {
     return queenNum == 8;
 }
 
-/******** maybe ********/
 
 void Application::goBack(const Position &p) {
 
@@ -105,19 +108,21 @@ Application::Iterator::Iterator(const Position &currPos) {
 Position Application::Iterator::getNextPosition() {
     int row = ((itrPosition *) currItrPosPtr)->row;   //（ ）是类型强转
     int column = ((itrPosition *) currItrPosPtr)->column;
+    // Check whether an application has been created
     if (done == 0) {
         row = 0;
         column++;
         done = 1;
     } else { row++; }
 
+    //return the current postion data back to the iterator
     ((itrPosition *) currItrPosPtr)->row = row;
     ((itrPosition *) currItrPosPtr)->column = column;
     return Position(row, column); //return the new position
 }
 
 bool Application::Iterator::noNextPosition() {
-
+    return ((itrPosition *) currItrPosPtr)->row == 8;
 }
 
 Application::Iterator::~Iterator() {
