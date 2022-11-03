@@ -10,8 +10,7 @@ int board[8][8] = {0};
 int queenNum = 0;
 //
 int done = 0;
-int tempr = 0;
-int tempc = 0;
+
 
 /***********/
 
@@ -109,11 +108,15 @@ Position Application::Iterator::getNextPosition() {
     int row = ((itrPosition *) currItrPosPtr)->row;   //（ ）是类型强转
     int column = ((itrPosition *) currItrPosPtr)->column;
     // Check whether an application has been created
+
+
     if (done == 0) {
         row = 0;
         column++;
         done = 1;
     } else { row++; }
+
+
 
     //return the current postion data back to the iterator
     ((itrPosition *) currItrPosPtr)->row = row;
