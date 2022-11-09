@@ -12,8 +12,6 @@ int queenNum = 0;
 int done = 0;
 
 
-/***********/
-
 void Application::initialize() {
 }
 
@@ -59,7 +57,6 @@ bool Application::isValid(const Position &p) {
 void Application::progress(const Position &p) {
     queenNum++;
     board[p.getRow()][p.getColumn()] = 1;
-    /************/
     done = 0;
 }
 
